@@ -1,13 +1,11 @@
 package com.pelajtech.marketi.pipeline.impl;
 
-import com.pelajtech.marketi.item.ShoppingItem;
 import com.pelajtech.marketi.pipeline.ItemLog;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
+import static com.pelajtech.marketi.item.ItemHelpers.item;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -17,32 +15,17 @@ class LocalItemLogTest {
         return factory.create().orElseThrow();
     }
 
-    private static ShoppingItem item(String group, String name) {
-        return new ShoppingItem(
-                UUID.randomUUID(),
-                group,
-                name,
-                Set.of("market"),
-                Map.of("market", 1),
-                Map.of(),
-                "Kosovo",
-                "barcode-" + name,
-                ShoppingItem.Unit.PIECE,
-                new ShoppingItem.Quantity(1, 1)
-        );
-    }
-
     @Test
     void committedItemsMakeTheirGroupsClaimable() {
         var factory = LocalItemLog.factory();
         var log = createLog(factory);
 
-        log.append(item("dairy", "Milk"));
-        log.append(item("dairy", "Yogurt"));
-        log.append(item("bakery", "Bread"));
+        log.append(item("bulmet", "Qumësht natyral 1L"));
+        log.append(item("bulmet", "Kos natyral 400g"));
+        log.append(item("furre", "Bukë integrale 500g"));
         log.commit();
 
-        assertEquals(Set.of("dairy", "bakery"), factory.reducer().claim());
+        assertEquals(Set.of("bulmet", "furre"), factory.reducer().claim());
     }
 
     @Test
@@ -51,16 +34,16 @@ class LocalItemLogTest {
         var reducer = factory.reducer();
         var log = createLog(factory);
 
-        log.append(item("dairy", "Milk"));
+        log.append(item("bulmet", "Qumësht natyral 1L"));
         log.commit();
 
-        assertEquals(Set.of("dairy"), reducer.claim());
+        assertEquals(Set.of("bulmet"), reducer.claim());
         assertEquals(Set.of(), reducer.claim());
 
-        log.append(item("dairy", "Yogurt"));
+        log.append(item("bulmet", "Kos natyral 400g"));
         log.commit();
 
-        assertEquals(Set.of("dairy"), reducer.claim());
+        assertEquals(Set.of("bulmet"), reducer.claim());
     }
 
     @Test
@@ -69,13 +52,13 @@ class LocalItemLogTest {
         var firstLog = createLog(factory);
         var secondLog = createLog(factory);
 
-        firstLog.append(item("dairy", "Milk"));
+        firstLog.append(item("bulmet", "Qumësht natyral 1L"));
         firstLog.commit();
 
-        secondLog.append(item("bakery", "Bread"));
+        secondLog.append(item("furre", "Bukë integrale 500g"));
         secondLog.commit();
 
-        assertEquals(Set.of("dairy", "bakery"), factory.reducer().claim());
+        assertEquals(Set.of("bulmet", "furre"), factory.reducer().claim());
     }
 
     @Test
@@ -83,7 +66,7 @@ class LocalItemLogTest {
         var factory = LocalItemLog.factory();
         var log = createLog(factory);
 
-        log.append(item("dairy", "Milk"));
+        log.append(item("bulmet", "Qumësht natyral 1L"));
 
         assertEquals(Set.of(), factory.reducer().claim());
     }
@@ -93,7 +76,7 @@ class LocalItemLogTest {
         var log = createLog(LocalItemLog.factory());
 
         assertThrows(NullPointerException.class, () -> log.append(null));
-        assertThrows(NullPointerException.class, () -> log.append(item(null, "Milk")));
+        assertThrows(NullPointerException.class, () -> log.append(item(null, "Qumësht natyral 1L")));
     }
 
 }
