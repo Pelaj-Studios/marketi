@@ -25,6 +25,11 @@ public class HeuristicScorer<T> {
                 .sum();
     }
 
+    public Optional<T> highest(Collection<T> values) {
+        return values.stream()
+                .max(Comparator.comparingInt(this::score));
+    }
+
     public static final class Builder<T> {
 
         private final NavigableMap<Integer, List<Predicate<T>>> rules = new TreeMap<>();
