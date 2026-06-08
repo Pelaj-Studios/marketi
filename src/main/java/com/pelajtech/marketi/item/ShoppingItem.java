@@ -35,7 +35,7 @@ public record ShoppingItem(
 
     }
 
-    record Quantity(int multiplier, int unit) {
+    public record Quantity(int multiplier, int unit) {
 
     }
 }
