@@ -31,7 +31,7 @@ public final class NameHeuristics {
 
     private static final Pattern WORD = Pattern.compile("\\p{L}{3,}");
     private static final Pattern UNIT = Pattern.compile(
-            "(?iu)\\b\\d+([,.]\\d+)?\\s?(kg|g|gr|mg|l|lt|ml|cl|cop[eë]?|kom|pak[oë]?|pako|qese|shishe|kana[cç]e|tablet[aë]?)\\b"
+            "(?iu)\\b(\\d+(?:[,.]\\d+)?)\\s?(kilogrammes?|kilograms?|kilograma|kgr|kg|milligrammes?|milligrams?|mg|grammes?|grams?|grama|gr|g|millilitres?|milliliters?|ml|centilitres?|centiliters?|cl|litres?|liters?|literat|litra|ltr|lt|l|cop[eë]?|kom|pcs?|pieces?|packs?|packets?|pak[oë]?|pako|qese|shishe|kana[cç]e|tablet[aë]?)\\b"
     );
     private static final Pattern ENDS_WITH_UNIT = Pattern.compile(
             "(?iu).*\\b\\d+([,.]\\d+)?\\s?(kg|g|gr|mg|l|lt|ml|cl|cop[eë]?|kom|pak[oë]?|pako|qese|shishe|kana[cç]e|tablet[aë]?)\\s*$"
@@ -160,12 +160,50 @@ public final class NameHeuristics {
         return trimmed.split("\\s+").length;
     }
 
-    private static String normalize(String name) {
+    static String normalize(String name) {
         return name.toLowerCase(Locale.ROOT)
                 .replace('ç', 'c')
                 .replace('ë', 'e')
                 .replaceAll("[^\\p{L}\\p{N}\\s]", " ")
                 .replaceAll("\\s+", " ")
                 .trim();
+    }
+
+    static String unitsAtEnd(String name) {
+        var matcher = UNIT.matcher(name);
+        var units = new StringBuilder();
+        var withoutUnits = new StringBuilder();
+
+        while (matcher.find()) {
+            if (!units.isEmpty()) {
+                units.append(' ');
+            }
+
+            var converted = UnitConverter.convert(matcher.group(1), matcher.group(2))
+                    .orElseThrow();
+
+            units.append(formatQuantity(converted.quantity()))
+                    .append(' ')
+                    .append(converted.canonicalToken());
+            matcher.appendReplacement(withoutUnits, " ");
+        }
+
+        matcher.appendTail(withoutUnits);
+
+        var baseName = normalize(withoutUnits.toString());
+
+        if (units.isEmpty()) {
+            return baseName;
+        }
+
+        if (baseName.isEmpty()) {
+            return units.toString();
+        }
+
+        return baseName + " " + units;
+    }
+
+    private static String formatQuantity(java.math.BigDecimal quantity) {
+        return quantity.stripTrailingZeros().toPlainString();
     }
 }
