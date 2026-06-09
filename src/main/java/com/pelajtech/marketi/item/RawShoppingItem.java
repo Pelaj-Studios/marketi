@@ -2,6 +2,7 @@ package com.pelajtech.marketi.item;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public record RawShoppingItem(
         String rawId,
@@ -13,7 +14,7 @@ public record RawShoppingItem(
         String barcode,
         LocalDateTime crawledAt,
         BigDecimal price,
-        BigDecimal salePrice,
-        int quantity,
-        int stock
+        Optional<BigDecimal> salePrice,
+        BigDecimal quantity,
+        BigDecimal stock
 ) { }

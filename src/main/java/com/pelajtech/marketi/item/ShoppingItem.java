@@ -1,9 +1,8 @@
 package com.pelajtech.marketi.item;
 
-import org.jspecify.annotations.Nullable;
-
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -31,7 +30,7 @@ public record ShoppingItem(
         GRAM
     }
 
-    record Price(String market, BigDecimal price, @Nullable BigDecimal salePrice) {
+    record Price(String market, BigDecimal price, Optional<BigDecimal> salePrice) {
 
     }
 
