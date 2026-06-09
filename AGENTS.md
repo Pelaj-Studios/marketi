@@ -41,6 +41,11 @@ methods unless they are reused or remove real complexity. For JSON, use typed Ja
 known instead of manually walking JSON trees. Keep external DTO records in a separate package-local class when they
 would crowd a downloader or service.
 
+Use `Logging.LOG` for error reporting. Avoid throwing exceptions for recoverable external-data failures such as bad HTTP
+responses, malformed JSON, missing payload fields, or mapper failures; log the problem and return a sane empty/default
+result such as `List.of()` or `Optional.empty()`. Keep exceptions for invalid caller input and truly unrecoverable
+programming errors.
+
 ## Testing Guidelines
 
 The project uses JUnit Jupiter via `org.junit:junit-bom:6.0.0`. Add tests beside the code’s package in `src/test/java`.

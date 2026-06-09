@@ -3,6 +3,7 @@ package com.pelajtech.marketi.market.viva;
 import com.pelajtech.marketi.item.RawShoppingItem;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Pattern;
 
@@ -25,8 +26,8 @@ class VivaItemDownloaderTest {
         assertTrue(items.stream().noneMatch(item -> item.rawId().isBlank()));
         assertTrue(items.stream().noneMatch(item -> item.name().isBlank()));
         assertTrue(items.stream().noneMatch(item -> item.stockUnit().isBlank()));
-        assertTrue(items.stream().allMatch(item -> item.quantity() > 0));
-        assertTrue(items.stream().allMatch(item -> item.stock() >= 0));
+        assertTrue(items.stream().allMatch(item -> item.quantity().compareTo(BigDecimal.ZERO) > 0));
+        assertTrue(items.stream().allMatch(item -> item.stock().compareTo(BigDecimal.ZERO) >= 0));
         assertTrue(items.stream().allMatch(item -> item.countryOfOrigin().isEmpty()
                 || ISO2.matcher(item.countryOfOrigin()).matches()));
         assertTrue(items.stream().allMatch(item -> item.salePrice().isEmpty()

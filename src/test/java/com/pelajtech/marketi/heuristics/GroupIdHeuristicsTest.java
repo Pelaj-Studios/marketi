@@ -24,8 +24,8 @@ class GroupIdHeuristicsTest {
                 LocalDateTime.now(),
                 BigDecimal.ONE,
                 Optional.empty(),
-                1,
-                1
+                BigDecimal.ONE,
+                BigDecimal.ONE
         );
     }
 

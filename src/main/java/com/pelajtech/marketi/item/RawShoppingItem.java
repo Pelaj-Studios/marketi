@@ -15,6 +15,6 @@ public record RawShoppingItem(
         LocalDateTime crawledAt,
         BigDecimal price,
         Optional<BigDecimal> salePrice,
-        int quantity,
-        int stock
+        BigDecimal quantity,
+        BigDecimal stock
 ) { }
