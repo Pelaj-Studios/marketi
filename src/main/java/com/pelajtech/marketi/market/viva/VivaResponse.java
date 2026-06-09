@@ -7,9 +7,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-record VivaResponse(Optional<List<Product>> data) {
+public record VivaResponse(Optional<List<Product>> data) {
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-    record Product(
+    public record Product(
             long id,
             Optional<String> name,
             Optional<String> description,

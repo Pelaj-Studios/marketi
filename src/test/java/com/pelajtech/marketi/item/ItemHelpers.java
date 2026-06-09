@@ -1,5 +1,6 @@
 package com.pelajtech.marketi.item;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -15,12 +16,12 @@ public final class ItemHelpers {
                 group,
                 name,
                 Set.of("market"),
-                Map.of("market", 1),
+                Map.of("market", BigDecimal.ONE),
                 Map.of(),
                 "Kosovo",
                 "barcode-" + name,
                 ShoppingItem.Unit.PIECE,
-                new ShoppingItem.Quantity(1, 1)
+                new ShoppingItem.Quantity(BigDecimal.ONE, BigDecimal.ONE)
         );
     }
 
