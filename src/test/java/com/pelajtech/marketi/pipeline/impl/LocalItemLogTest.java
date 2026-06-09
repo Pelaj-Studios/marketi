@@ -25,7 +25,7 @@ class LocalItemLogTest {
         log.append(item("furre", "Bukë integrale 500g"));
         log.commit();
 
-        assertEquals(Set.of("bulmet", "furre"), factory.reducer().claim());
+        assertEquals(Set.of("bulmet", "furre"), factory.reducer().claimGroups());
     }
 
     @Test
@@ -37,13 +37,13 @@ class LocalItemLogTest {
         log.append(item("bulmet", "Qumësht natyral 1L"));
         log.commit();
 
-        assertEquals(Set.of("bulmet"), reducer.claim());
-        assertEquals(Set.of(), reducer.claim());
+        assertEquals(Set.of("bulmet"), reducer.claimGroups());
+        assertEquals(Set.of(), reducer.claimGroups());
 
         log.append(item("bulmet", "Kos natyral 400g"));
         log.commit();
 
-        assertEquals(Set.of("bulmet"), reducer.claim());
+        assertEquals(Set.of("bulmet"), reducer.claimGroups());
     }
 
     @Test
@@ -58,7 +58,7 @@ class LocalItemLogTest {
         secondLog.append(item("furre", "Bukë integrale 500g"));
         secondLog.commit();
 
-        assertEquals(Set.of("bulmet", "furre"), factory.reducer().claim());
+        assertEquals(Set.of("bulmet", "furre"), factory.reducer().claimGroups());
     }
 
     @Test
@@ -68,7 +68,7 @@ class LocalItemLogTest {
 
         log.append(item("bulmet", "Qumësht natyral 1L"));
 
-        assertEquals(Set.of(), factory.reducer().claim());
+        assertEquals(Set.of(), factory.reducer().claimGroups());
     }
 
     @Test

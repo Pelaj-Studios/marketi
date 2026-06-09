@@ -18,22 +18,14 @@ final class LocalItemStore {
         }
     }
 
-    synchronized Set<String> claim() {
+    synchronized Set<String> claimGroups() {
         var claimed = Set.copyOf(pendingGroups);
         pendingGroups.clear();
         return claimed;
     }
 
-    synchronized List<ShoppingItem> items(Collection<String> groups) {
-        var items = new ArrayList<ShoppingItem>();
-        for (var group : groups) {
-            var groupItems = itemsByGroup.getOrDefault(group, List.of());
-            if (!groupItems.isEmpty()) {
-                items.add(groupItems.getFirst());
-            }
-        }
-
-        return List.copyOf(items);
+    synchronized List<ShoppingItem> items(String group) {
+        return List.copyOf(itemsByGroup.getOrDefault(group, List.of()));
     }
 
 }
