@@ -28,12 +28,14 @@ public class LocalItemReducer implements ItemReducer {
             return;
         }
 
-        var targetItem = items.stream()
-                .reduce((best, candidate) -> NameHeuristics.NAME_HEURISTIC.score(candidate.name())
-                        > NameHeuristics.NAME_HEURISTIC.score(best.name())
-                        ? candidate
-                        : best
+        var targetName = NameHeuristics.NAME_HEURISTIC.highest(items.stream()
+                        .map(ShoppingItem::name)
+                        .toList()
                 )
+                .orElseThrow();
+        var targetItem = items.stream()
+                .filter(item -> item.name().equals(targetName))
+                .findFirst()
                 .orElseThrow();
 
         var markets = new HashSet<>(targetItem.markets());
