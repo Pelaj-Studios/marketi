@@ -22,9 +22,9 @@ class VivaItemDownloaderTest {
 
         assertFalse(items.isEmpty());
         assertTrue(items.stream().allMatch(item -> Viva.MARKET_ID.equals(item.marketId())));
-        assertTrue(items.stream().allMatch(item -> !item.rawId().isBlank()));
-        assertTrue(items.stream().allMatch(item -> !item.name().isBlank()));
-        assertTrue(items.stream().allMatch(item -> !item.stockUnit().isBlank()));
+        assertTrue(items.stream().noneMatch(item -> item.rawId().isBlank()));
+        assertTrue(items.stream().noneMatch(item -> item.name().isBlank()));
+        assertTrue(items.stream().noneMatch(item -> item.stockUnit().isBlank()));
         assertTrue(items.stream().allMatch(item -> item.quantity() > 0));
         assertTrue(items.stream().allMatch(item -> item.stock() >= 0));
         assertTrue(items.stream().allMatch(item -> item.countryOfOrigin().isEmpty()

@@ -25,6 +25,7 @@ import java.util.function.Consumer;
 
 public class VivaItemDownloader implements ItemDownloader {
 
+
     private static final int DEFAULT_CONCURRENCY = 4;
     private static final int DEFAULT_PER_PAGE = 20;
     private static final int DEFAULT_MAX_PAGES = Integer.MAX_VALUE;
@@ -82,6 +83,7 @@ public class VivaItemDownloader implements ItemDownloader {
             stopAt.accumulateAndGet(nextPage.get(), Math::min);
             throw new IllegalStateException("Failed to download Viva items.", e);
         } finally {
+            httpClient.close();
             executor.shutdownNow();
         }
     }
