@@ -13,7 +13,7 @@ public record ShoppingItem(
         String name,
 
         Set<String> markets,
-        Map<String, Integer> marketStockCount,
+        Map<String, BigDecimal> marketStockCount,
 
         Map<String, Price> marketPrices,
 
@@ -30,11 +30,11 @@ public record ShoppingItem(
         GRAM
     }
 
-    record Price(String market, BigDecimal price, Optional<BigDecimal> salePrice) {
+    public record Price(String market, BigDecimal price, Optional<BigDecimal> salePrice) {
 
     }
 
-    public record Quantity(int multiplier, int unit) {
+    public record Quantity(BigDecimal multiplier, BigDecimal unit) {
 
     }
 }
