@@ -73,12 +73,12 @@ public class Pipeline {
 
     private void pollAndRunReduce() {
         try {
-            var polled = reducer.claim();
-            if (!polled.isEmpty()) {
-                reducer.reduce(polled, sink);
+            var groups = reducer.claimGroups();
+            for (var group : groups) {
+                reducer.reduceGroup(group, sink);
             }
         } catch (Exception e) {
-            Logging.LOG.error("Failed to claim reducer keys.", e);
+            Logging.LOG.error("Failed to claim and reduce groups.", e);
         }
     }
 
