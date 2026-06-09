@@ -6,6 +6,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -22,7 +23,7 @@ class GroupIdHeuristicsTest {
                 "",
                 LocalDateTime.now(),
                 BigDecimal.ONE,
-                null,
+                Optional.empty(),
                 1,
                 1
         );

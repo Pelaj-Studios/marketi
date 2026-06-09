@@ -32,6 +32,15 @@ Records are used for immutable data carriers. Tests use package-private classes 
 example `reduceEmitsItemWithHighestScoringNameAcrossGroups`. Keep item examples realistic for Kosovo markets; Albanian
 product names are preferred in tests.
 
+Avoid nulls in project code when possible. Use `Optional` for absent values; only use null when an external library or
+API requires it. Keep shared date/time behavior in `com.pelajtech.marketi.utils.DateUtils`, using its UTC clock instead
+of local system timezone clocks.
+
+Prefer direct, readable code over unnecessary indirection. Do not add custom factory interfaces or tiny one-line helper
+methods unless they are reused or remove real complexity. For JSON, use typed Jackson records when the payload shape is
+known instead of manually walking JSON trees. Keep external DTO records in a separate package-local class when they
+would crowd a downloader or service.
+
 ## Testing Guidelines
 
 The project uses JUnit Jupiter via `org.junit:junit-bom:6.0.0`. Add tests beside the code’s package in `src/test/java`.
@@ -40,6 +49,9 @@ Use `@ParameterizedTest` with `@CsvSource` for normalization tables and market-n
 Run `./gradlew test` before submitting changes. Cover edge cases for heuristics, especially unit aliases, decimal
 separators, Albanian diacritics, and ordering-sensitive reducer behavior. Avoid duplicating test object construction;
 use `ItemHelpers.item(...)` for `ShoppingItem` fixtures.
+
+For market downloaders, prefer real HTTP integration tests over mocked HTTP clients so downloader behavior is checked
+against the actual market response shape. Keep those tests bounded with options such as `maxPages` or per-page limits.
 
 ## Commit & Pull Request Guidelines
 
