@@ -45,6 +45,19 @@ class LocalItemReducerTest {
     }
 
     @Test
+    void reduceGroupEmitsSingleItemGroupUnchanged() {
+        var factory = LocalItemLog.factory();
+        var item = item("bulmet", "Qumësht natyral 1L");
+
+        appendAndCommit(factory, item);
+
+        var reduced = new ArrayList<ShoppingItem>();
+        factory.reducer().reduceGroup("bulmet", reduced::add);
+
+        assertEquals(List.of(item), reduced);
+    }
+
+    @Test
     void reduceGroupEmitsItemWithHighestScoringNameInGroup() {
         var factory = LocalItemLog.factory();
         var cleanProduct = item("bulmet", "Qumësht natyral 1L", "viva", BigDecimal.TEN, BigDecimal.ONE);
